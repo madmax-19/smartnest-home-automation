@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SmartNest</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SmartNest</title><style>
 :root{--bg:#080d19;--card:#142139;--line:#293954;--txt:#eef4ff;--muted:#91a2bd;--cyan:#42d9f5;--violet:#9a7cff}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0,#1a2a50,transparent 35%),var(--bg);color:var(--txt);font:15px system-ui;padding:20px}.wrap{max-width:1150px;margin:auto}header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:22px}.brand{font-size:23px;font-weight:800}.muted,small{color:var(--muted)}.card,.room{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:18px}.hero{display:grid;grid-template-columns:1.5fr 1fr;gap:14px}.hero h1{font-size:34px;margin:8px 0}.big{font-size:42px;font-weight:800}.rooms{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-top:14px}.room h3{margin:0 0 12px}.dev{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #ffffff18;padding:12px 0}.switch{border:0;border-radius:30px;background:#3a4b65;width:48px;height:27px;padding:3px}.switch:after{content:"";display:block;background:white;width:21px;height:21px;border-radius:50%;transition:.2s}.switch.on{background:linear-gradient(90deg,#36cde7,#8e7bff)}.switch.on:after{transform:translateX(21px)}button{cursor:pointer}.btn{padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:#1c2c47;color:var(--txt);font-weight:700}.primary{background:linear-gradient(120deg,#3bcde9,#8c79ff);color:#07101d;border:0}.danger{color:#ff9ba5}.display{background:#07131d;border:1px solid #1b4855;color:#7ff1da;padding:12px;border-radius:10px;font:12px monospace;margin-top:10px}.gatebuttons{display:flex;gap:7px;flex-wrap:wrap}.login{position:fixed;inset:0;background:#050914ed;display:grid;place-items:center;padding:16px}.loginbox{width:min(400px,100%);background:#142139;border:1px solid var(--line);border-radius:18px;padding:24px}.loginbox input{display:block;width:100%;padding:12px;margin:8px 0 14px;background:#091321;color:white;border:1px solid var(--line);border-radius:9px}.loginbox button{width:100%}.hidden{display:none!important}#msg{font-size:12px;color:var(--muted);margin-top:12px}.status{font-size:12px;color:var(--muted)}@media(max-width:800px){.rooms{grid-template-columns:repeat(2,1fr)}.hero{grid-template-columns:1fr}}@media(max-width:540px){.rooms{grid-template-columns:1fr}body{padding:12px}.hero h1{font-size:27px}}
 </style></head><body><div class="wrap">
 <header><div><div class="brand">⌂ SmartNest</div><small>HOME AUTOMATION CONTROL</small></div><div><span class="status" id="status">Signed out</span> <button class="btn hidden" id="logout">Sign out</button></div></header>
@@ -12,11 +12,12 @@
 <div class="room"><h3>🛋️ Living room</h3><div class="dev">Living room LED <button class="switch" data-id="living_light"></button></div><div class="display">1.3″ OLED<br>SMART HOME<br><span id="oled">Waiting for status</span></div></div>
 <div class="room"><h3>🚪 Automatic gate</h3><div class="display" id="gateDetail">GATE: CLOSED</div><p class="gatebuttons"><button class="btn primary" data-gate="moving_open">Open</button><button class="btn" data-gate="moving_close">Close</button><button class="btn danger" data-gate="stopped">Stop</button></p></div>
 </section><p class="status" id="activity">Sign in to connect to Supabase.</p></div>
-<div class="login" id="login"><form class="loginbox" id="form"><div class="brand">⌂ SmartNest</div><h2>Sign in</h2><p class="muted">Use your existing Supabase Authentication email and password.</p><label>Email</label><input id="email" type="email" required autocomplete="username"><label>Password</label><input id="password" type="password" required autocomplete="current-password"><button class="btn primary" id="submit">Sign in</button><div id="msg">Your password is sent to Supabase Auth over HTTPS.</div></form></div>
-<script>
+<div class="login" id="login"><form class="loginbox" id="form"><div class="brand">⌂ SmartNest</div><h2>Sign in</h2><p class="muted">Use your existing Supabase Authentication email and password.</p><label>Email</label><input id="email" type="email" required autocomplete="username"><label>Password</label><input id="password" type="password" required autocomplete="current-password"><button class="btn primary" id="submit">Sign in</button><div id="msg">Your password is sent securely to Supabase Auth over HTTPS. Any login or connection error will appear here.</div></form></div>
+<script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 const URL="https://ojqghjtjotsmrxwmjjkj.supabase.co";
 const KEY="sb_publishable_ChzxAyzV4xeEAu59LhoObg_HgiWhhg5";
-const sb=window.supabase.createClient(URL,KEY),ids=["bathroom_light","bathroom_fan","bedroom_light","bedroom_fan","dining_light","kitchen_light_1","kitchen_light_2","living_light"],states={};
+const sb=createClient(URL,KEY),ids=["bathroom_light","bathroom_fan","bedroom_light","bedroom_fan","dining_light","kitchen_light_1","kitchen_light_2","living_light"],states={};
 const el=id=>document.getElementById(id);let channel;
 function draw(){document.querySelectorAll("[data-id]").forEach(b=>b.classList.toggle("on",!!states[b.dataset.id]));el("active").textContent=ids.filter(x=>states[x]).length+" / 8";el("oled").textContent=ids.filter(x=>states[x]).length+" devices ON"}
 function gateDraw(s){el("gateSummary").textContent=s;el("gateDetail").textContent="GATE: "+s.toUpperCase().replaceAll("_"," ")}
@@ -27,7 +28,46 @@ async function gate(s){let {error}=await sb.from("gate_state").update({state:s,u
 document.querySelectorAll("[data-id]").forEach(b=>b.onclick=()=>setDevice(b.dataset.id,!states[b.dataset.id]));
 document.querySelectorAll("[data-gate]").forEach(b=>b.onclick=()=>gate(b.dataset.gate));
 el("alloff").onclick=async()=>{for(const id of ids)if(states[id])await setDevice(id,false)};
-el("form").onsubmit=async e=>{e.preventDefault();el("submit").disabled=true;el("msg").textContent="Signing in…";let {data,error}=await sb.auth.signInWithPassword({email:el("email").value.trim(),password:el("password").value});el("submit").disabled=false;if(error){el("msg").textContent=error.message;return}el("login").classList.add("hidden");el("logout").classList.remove("hidden");try{await load()}catch(err){el("msg").textContent=err.message;alert("Database error: "+err.message)}};
+el("form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const email = el("email").value.trim();
+  const password = el("password").value;
+  el("submit").disabled = true;
+  el("submit").textContent = "Signing in…";
+  el("msg").textContent = "Connecting to Supabase Authentication…";
+  try {
+    const { data, error } = await sb.auth.signInWithPassword({ email, password });
+    if (error) {
+      el("msg").textContent = "Sign-in failed: " + error.message;
+      return;
+    }
+    el("msg").textContent = "Signed in. Loading your devices…";
+    try {
+      await load();
+      el("login").classList.add("hidden");
+      el("logout").classList.remove("hidden");
+    } catch (dbError) {
+      el("msg").textContent = "Signed in, but database access failed: " + dbError.message;
+    }
+  } catch (networkError) {
+    el("msg").textContent = "Connection error: " + (networkError?.message || String(networkError)) + ". Check your internet connection and reload.";
+  } finally {
+    el("submit").disabled = false;
+    el("submit").textContent = "Sign in";
+  }
+});
 el("logout").onclick=async()=>{if(channel)await sb.removeChannel(channel);await sb.auth.signOut();location.reload()};
-(async()=>{let {data}=await sb.auth.getSession();if(data.session){el("login").classList.add("hidden");el("logout").classList.remove("hidden");try{await load()}catch(e){alert(e.message)}}})();
+(async()=>{
+  try {
+    const { data, error } = await sb.auth.getSession();
+    if (error) throw error;
+    if (data.session) {
+      el("login").classList.add("hidden");
+      el("logout").classList.remove("hidden");
+      try { await load(); } catch (e) { el("msg").textContent = "Database access error: " + e.message; }
+    }
+  } catch (e) {
+    el("msg").textContent = "Supabase initialization error: " + e.message;
+  }
+})();
 </script></body></html>
