@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080d19">
+<title>SmartNest | Home Automation</title>
+<style>
+:root{--bg:#080d19;--panel:#111a2b;--panel2:#162238;--line:#263650;--text:#eef4ff;--muted:#91a2bd;--cyan:#42d9f5;--violet:#9a7cff;--green:#39d98a;--red:#ff6b78;--amber:#ffc76b}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 85% 0%,#172548 0,transparent 34%),var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
+button,input{font:inherit}button{cursor:pointer}.app{max-width:1440px;margin:auto;padding:24px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:26px}.brand{display:flex;align-items:center;gap:12px}.logo{width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,var(--cyan),var(--violet));display:grid;place-items:center;color:#08111e;font-size:23px;font-weight:900}.brand h1{font-size:20px;margin:0;letter-spacing:.3px}.brand p{margin:2px 0 0;color:var(--muted);font-size:12px}.top-right{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.pill{border:1px solid var(--line);background:#101a2b;padding:8px 12px;border-radius:999px;color:var(--muted);font-size:12px;display:flex;align-items:center;gap:8px}.dot{width:8px;height:8px;border-radius:50%;background:var(--amber);box-shadow:0 0 10px currentColor}.dot.online{background:var(--green)}.btn{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:10px 14px;border-radius:12px;font-weight:650;transition:.2s}.btn:hover{border-color:var(--cyan);transform:translateY(-1px)}.btn.primary{background:linear-gradient(120deg,#3bcde9,#8c79ff);border:0;color:#07101d}.btn.danger{border-color:#713b4a;color:#ff9ba5}.hero{display:grid;grid-template-columns:1.6fr 1fr;gap:16px;margin-bottom:18px}.welcome,.weather,.card,.room{background:linear-gradient(145deg,rgba(22,34,56,.96),rgba(14,23,39,.96));border:1px solid var(--line);border-radius:20px}.welcome{padding:24px;position:relative;overflow:hidden}.welcome:after{content:"⌂";position:absolute;right:30px;bottom:-55px;font-size:190px;color:#42d9f5;opacity:.06}.eyebrow{color:var(--cyan);text-transform:uppercase;letter-spacing:2px;font-size:10px;font-weight:800}.welcome h2{font-size:clamp(24px,4vw,36px);line-height:1.12;margin:10px 0}.welcome p{color:var(--muted);max-width:560px;margin:0 0 18px}.stats{display:flex;gap:24px;flex-wrap:wrap}.stat strong{font-size:22px;display:block}.stat span{font-size:11px;color:var(--muted)}.weather{padding:22px;display:flex;flex-direction:column;justify-content:space-between}.weather-head{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}.temp{font-size:42px;font-weight:750;letter-spacing:-2px}.weather small{color:var(--muted)}.section-head{display:flex;align-items:end;justify-content:space-between;margin:26px 2px 13px;gap:12px}.section-head h3{margin:0;font-size:18px}.section-head p{margin:3px 0 0;color:var(--muted);font-size:12px}.rooms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.room{padding:17px;min-width:0}.room-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}.room-title{display:flex;gap:11px;align-items:center}.room-icon{width:40px;height:40px;border-radius:13px;background:#20324d;display:grid;place-items:center;font-size:20px}.room h4{margin:0;font-size:15px}.room-head small{color:var(--muted);font-size:11px}.device{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-top:1px solid rgba(145,162,189,.12);gap:10px}.device-name{font-size:13px;font-weight:600}.device-sub{display:block;color:var(--muted);font-size:10px;margin-top:2px}.switch{width:46px;height:26px;border:0;border-radius:99px;background:#34445c;padding:3px;flex-shrink:0;transition:.2s}.switch:after{content:"";display:block;width:20px;height:20px;border-radius:50%;background:#d9e4f5;transition:.2s}.switch.on{background:linear-gradient(90deg,#36cde7,#8e7bff)}.switch.on:after{transform:translateX(20px);background:white}.sensor{display:flex;align-items:center;gap:12px;padding:10px 0}.sensor-value{font-size:24px;font-weight:750}.sensor-label{font-size:11px;color:var(--muted)}.display-preview{background:#07131d;border:1px solid #1b4855;border-radius:12px;padding:12px;color:#7ff1da;font-family:ui-monospace,monospace;font-size:11px;min-height:60px}.display-preview .display-title{color:#f0fbff;font-weight:bold;margin-bottom:6px}.gate-card{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center}.gate-visual{height:85px;border-radius:12px;background:linear-gradient(90deg,#1c2d48,#0c1728);display:flex;align-items:center;justify-content:center;font-size:30px;letter-spacing:5px;color:#6c8bb3}.gate-actions{display:flex;gap:7px;flex-wrap:wrap}.gate-actions .btn{padding:8px 11px;font-size:12px}.lower{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;margin-top:16px}.card{padding:18px}.card h3{margin:0 0 14px;font-size:16px}.activity{display:flex;flex-direction:column;gap:11px}.event{display:flex;gap:10px;align-items:flex-start;color:var(--muted);font-size:12px}.event b{color:var(--text);font-weight:600}.event-icon{width:27px;height:27px;border-radius:9px;background:#20324d;display:grid;place-items:center;flex-shrink:0}.settings-row{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:10px 0}.settings-row label{font-size:12px;color:var(--muted)}input[type=text]{background:#091321;border:1px solid var(--line);color:var(--text);padding:10px 12px;border-radius:10px;width:100%;min-width:0;outline:none}input:focus{border-color:var(--cyan)}.url-row{display:flex;gap:8px;width:100%}.url-row .btn{white-space:nowrap}.hint{font-size:11px;color:var(--muted);margin:9px 0 0}.footer{text-align:center;color:#63738d;font-size:11px;padding:24px 0 8px}.toast{position:fixed;bottom:20px;left:50%;transform:translate(-50%,20px);opacity:0;background:#eaf7ff;color:#07101d;padding:11px 16px;border-radius:12px;font-size:12px;font-weight:700;transition:.25s;pointer-events:none;z-index:5}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:850px){.hero{grid-template-columns:1fr}.rooms{grid-template-columns:repeat(2,minmax(0,1fr))}.lower{grid-template-columns:1fr}}
+@media(max-width:560px){.app{padding:15px}.top{align-items:flex-start}.top-right{justify-content:flex-end}.top-right .pill{display:none}.rooms{grid-template-columns:1fr}.welcome{padding:20px}.weather{min-height:145px}.gate-card{grid-template-columns:1fr}.gate-actions{justify-content:flex-start}.section-head{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="brand"><div class="logo">⌂</div><div><h1>SmartNest</h1><p>HOME AUTOMATION CONTROL</p></div></div>
+    <div class="top-right">
+      <div class="pill"><span class="dot" id="statusDot"></span><span id="connectionLabel">Demo mode</span></div>
+      <button class="btn" id="modeBtn">Connect ESP32</button>
+    </div>
+  </header>
+  <section class="hero">
+    <div class="welcome">
+      <div class="eyebrow">Your home, connected</div>
+      <h2>Welcome to your<br>smart home.</h2>
+      <p>Control lights, fans and your automatic gate from one simple dashboard. This website is ready for your ESP32 integration.</p>
+      <div class="stats">
+        <div class="stat"><strong id="activeCount">0 / 8</strong><span>DEVICES ON</span></div>
+        <div class="stat"><strong id="roomCount">5</strong><span>ROOMS</span></div>
+        <div class="stat"><strong id="gateState">Closed</strong><span>GATE STATUS</span></div>
+      </div>
+    </div>
+    <div class="weather">
+      <div class="weather-head"><span>DINING ROOM · SENSOR</span><span>● LIVE DATA</span></div>
+      <div><div class="temp"><span id="temperature">--</span>°C</div><small>Temperature</small></div>
+      <div class="weather-head"><span>Humidity</span><strong id="humidity" style="color:var(--text)">--%</strong></div>
+    </div>
+  </section>
+  <div class="section-head"><div><h3>Room controls</h3><p>Tap a switch to turn a device on or off.</p></div><button class="btn" id="allOff">All lights & fans off</button></div>
+  <section class="rooms">
+    <article class="room" data-room="bathroom"><div class="room-head"><div class="room-title"><div class="room-icon">🚿</div><div><h4>Bathroom</h4><small>2 devices</small></div></div></div>
+      <div class="device"><div><span class="device-name">Ceiling LED</span><span class="device-sub">Bathroom lighting</span></div><button class="switch" data-device="bathroom_light" aria-label="Toggle bathroom light" aria-pressed="false"></button></div>
+      <div class="device"><div><span class="device-name">Exhaust fan</span><span class="device-sub">Ventilation</span></div><button class="switch" data-device="bathroom_fan" aria-label="Toggle bathroom exhaust fan" aria-pressed="false"></button></div>
+    </article>
+    <article class="room" data-room="bedroom"><div class="room-head"><div class="room-title"><div class="room-icon">🛏️</div><div><h4>Bedroom</h4><small>2 devices</small></div></div></div>
+      <div class="device"><div><span class="device-name">Bedroom LED</span><span class="device-sub">Main lighting</span></div><button class="switch" data-device="bedroom_light" aria-label="Toggle bedroom light" aria-pressed="false"></button></div>
+      <div class="device"><div><span class="device-name">Ceiling fan</span><span class="device-sub">Room fan</span></div><button class="switch" data-device="bedroom_fan" aria-label="Toggle bedroom fan" aria-pressed="false"></button></div>
+    </article>
+    <article class="room" data-room="dining"><div class="room-head"><div class="room-title"><div class="room-icon">🍽️</div><div><h4>Dining room</h4><small>1 device + sensor</small></div></div></div>
+      <div class="device"><div><span class="device-name">Dining LED</span><span class="device-sub">Main lighting</span></div><button class="switch" data-device="dining_light" aria-label="Toggle dining light" aria-pressed="false"></button></div>
+      <div class="sensor"><div><div class="sensor-value"><span id="roomTemp">--</span>°C</div><div class="sensor-label">Temperature · DHT22</div></div><div style="margin-left:auto;text-align:right"><div class="sensor-value"><span id="roomHum">--</span>%</div><div class="sensor-label">Humidity</div></div></div>
+      <div class="display-preview"><div class="display-title">16×2 LCD · DINING</div><div id="lcdText">TEMP: -- C&nbsp;&nbsp; HUM: -- %</div><div>SMART HOME SYSTEM</div></div>
+    </article>
+    <article class="room" data-room="kitchen"><div class="room-head"><div class="room-title"><div class="room-icon">🍳</div><div><h4>Kitchen</h4><small>2 devices</small></div></div></div>
+      <div class="device"><div><span class="device-name">Kitchen LED 1</span><span class="device-sub">Counter light</span></div><button class="switch" data-device="kitchen_light_1" aria-label="Toggle kitchen light 1" aria-pressed="false"></button></div>
+      <div class="device"><div><span class="device-name">Kitchen LED 2</span><span class="device-sub">Ceiling light</span></div><button class="switch" data-device="kitchen_light_2" aria-label="Toggle kitchen light 2" aria-pressed="false"></button></div>
+    </article>
+    <article class="room" data-room="living"><div class="room-head"><div class="room-title"><div class="room-icon">🛋️</div><div><h4>Living room</h4><small>1 device + display</small></div></div></div>
+      <div class="device"><div><span class="device-name">Living room LED</span><span class="device-sub">Main lighting</span></div><button class="switch" data-device="living_light" aria-label="Toggle living room light" aria-pressed="false"></button></div>
+      <div class="display-preview"><div class="display-title">1.3″ OLED · LIVING ROOM</div><div>SMART HOME</div><div id="oledText">All systems ready</div></div>
+    </article>
+    <article class="room"><div class="room-head"><div class="room-title"><div class="room-icon">🚪</div><div><h4>Automatic gate</h4><small>Motor + limit switches</small></div></div></div>
+      <div class="gate-visual" id="gateVisual">▥ ▥ ▥ ▥</div>
+      <div class="device"><div><span class="device-name">Gate status</span><span class="device-sub" id="gateDetail">Closed · Motor stopped</span></div><span class="pill" id="gatePill">CLOSED</span></div>
+      <div class="gate-actions"><button class="btn primary" data-gate="open">Open</button><button class="btn" data-gate="close">Close</button><button class="btn danger" data-gate="stop">Stop</button></div>
+    </article>
+  </section>
+  <section class="lower">
+    <div class="card"><h3>Recent activity</h3><div class="activity" id="activity"><div class="event"><span class="event-icon">✓</span><span><b>Dashboard ready</b><br>Demo mode is active. Connect your ESP32 when ready.</span></div></div></div>
+    <div class="card" id="settings"><h3>ESP32 connection</h3>
+      <div class="settings-row"><label for="espUrl">ESP32 address (same Wi-Fi network)</label></div>
+      <div class="url-row"><input id="espUrl" type="text" placeholder="http://192.168.1.50"><button class="btn primary" id="connectBtn">Connect</button></div>
+      <p class="hint">Enter your ESP32's local IP address. The ESP32 firmware must provide the API endpoints described in the README. Demo mode works without hardware.</p>
+      <div class="settings-row"><label>Connection mode</label><strong id="modeText" style="font-size:12px">Demo</strong></div>
+      <div class="settings-row"><label>Data refresh</label><strong style="font-size:12px">Every 3 seconds</strong></div>
+      <button class="btn" id="demoBtn" style="width:100%;margin-top:8px">Switch to demo mode</button>
+    </div>
+  </section>
+  <footer class="footer">SmartNest · ESP32 Smart Home Automation · GitHub Pages ready</footer>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const devices=["bathroom_light","bathroom_fan","bedroom_light","bedroom_fan","dining_light","kitchen_light_1","kitchen_light_2","living_light"];
+const state=Object.fromEntries(devices.map(d=>[d,false]));
+let mode="demo",baseUrl="",gate="closed",timer=null;
+const $=id=>document.getElementById(id);
+function notify(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2200)}
+function log(title,detail,icon="⚡"){const el=document.createElement("div");el.className="event";const ic=document.createElement("span");ic.className="event-icon";ic.textContent=icon;const tx=document.createElement("span");const b=document.createElement("b");b.textContent=title;tx.append(b,document.createElement("br"),document.createTextNode(detail));el.append(ic,tx);$("activity").prepend(el);while($("activity").children.length>5)$("activity").lastChild.remove()}
+function render(){document.querySelectorAll("[data-device]").forEach(b=>{const on=!!state[b.dataset.device];b.classList.toggle("on",on);b.setAttribute("aria-pressed",String(on))});$("activeCount").textContent=devices.filter(d=>state[d]).length+" / 8";$("gateState").textContent=gate[0].toUpperCase()+gate.slice(1);$("gateDetail").textContent=gate==="moving_open"?"Opening…":gate==="moving_close"?"Closing…":gate==="open"?"Open · Motor stopped":"Closed · Motor stopped";$("gatePill").textContent=gate.replace("_"," ").toUpperCase();$("gateVisual").textContent=gate==="open"?"←  GATE OPEN  →":gate.startsWith("moving")?"⇢ ▥ ▥ ▥":"▥ ▥ ▥ ▥";$("oledText").textContent=devices.filter(d=>state[d]).length+" devices ON · "+(mode==="demo"?"Demo":"ESP32") ;$("statusDot").classList.toggle("online",mode==="live");$("connectionLabel").textContent=mode==="live"?"ESP32 connected":"Demo mode";$("modeText").textContent=mode==="live"?"Live ESP32":"Demo"}
+async function api(path,body){const res=await fetch(baseUrl+path,{method:body?"POST":"GET",headers:{"Content-Type":"application/json"},body:body?JSON.stringify(body):undefined});if(!res.ok)throw new Error("HTTP "+res.status);return res.json().catch(()=>({ok:true}))}
+async function setDevice(id,on){if(mode==="live"){try{await api("/api/control",{device:id,state:on})}catch(e){notify("ESP32 command failed: "+e.message);return}}state[id]=on;render();log(id.replaceAll("_"," ")+" turned "+(on?"ON":"OFF"),mode==="live"?"Command sent to ESP32":"Demo control updated",on?"💡":"◉")}
+async function setGate(action){if(mode==="live"){try{await api("/api/gate",{action})}catch(e){notify("Gate command failed: "+e.message);return}}gate=action==="open"?"moving_open":action==="close"?"moving_close":"closed";if(action==="stop")gate="closed";render();log("Gate "+action,"Gate command "+(mode==="live"?"sent":"simulated"),"🚪");if(mode==="demo"&&action!=="stop")setTimeout(()=>{gate=action==="open"?"open":"closed";render()},1800)}
+async function poll(){if(mode!=="live")return;try{const d=await api("/api/status");if(d.devices)Object.assign(state,d.devices);if(typeof d.temperature==="number")updateSensors(d.temperature,d.humidity);if(d.gate)gate=d.gate;render()}catch(e){$("connectionLabel").textContent="ESP32 unavailable";$("statusDot").classList.remove("online")}}
+function updateSensors(temp,hum){$("temperature").textContent=Number(temp).toFixed(1);$("roomTemp").textContent=Number(temp).toFixed(1);$("roomHum").textContent=Number(hum??0).toFixed(0);$("humidity").textContent=Number(hum??0).toFixed(0)+"%";$("lcdText").textContent="TEMP: "+Number(temp).toFixed(1)+" C  HUM: "+Number(hum??0).toFixed(0)+" %"}
+function demoSensors(){if(mode==="demo"){const t=26+Math.random()*3,h=55+Math.random()*12;updateSensors(t,h)}}
+document.querySelectorAll("[data-device]").forEach(b=>b.addEventListener("click",()=>setDevice(b.dataset.device,!state[b.dataset.device])));
+document.querySelectorAll("[data-gate]").forEach(b=>b.addEventListener("click",()=>setGate(b.dataset.gate)));
+$("allOff").addEventListener("click",async()=>{for(const d of devices)if(state[d])await setDevice(d,false);notify("All lights and fans are off")});
+function connect(){const val=$("espUrl").value.trim().replace(/\/+$/,"");if(!/^https?:\/\/[^ ]+$/i.test(val)){notify("Enter a valid ESP32 URL, e.g. http://192.168.1.50");return}baseUrl=val;mode="live";if(timer)clearInterval(timer);render();poll();timer=setInterval(poll,3000);notify("Trying to connect to ESP32…")}
+$("connectBtn").addEventListener("click",connect);$("modeBtn").addEventListener("click",()=>$("settings").scrollIntoView({behavior:"smooth"}));$("demoBtn").addEventListener("click",()=>{mode="demo";if(timer)clearInterval(timer);render();demoSensors();notify("Demo mode enabled")});
+demoSensors();setInterval(demoSensors,5000);render();
+</script>
+</body></html>
