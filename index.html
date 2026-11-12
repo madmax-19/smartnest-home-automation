@@ -3,7 +3,7 @@
 </style></head><body><div class="wrap">
 <header><div><div class="brand">⌂ SmartNest</div><small>HOME AUTOMATION CONTROL</small></div><div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span class="esp-indicator" id="espStatus"><i class="esp-dot"></i><span id="espStatusText">ESP: Unknown</span></span><span class="status" id="status">Signed out</span> <button class="btn hidden" id="logout">Sign out</button></div></header>
 <section class="hero"><div class="card"><small>YOUR HOME, CONNECTED</small><h1>Welcome to your<br>smart home.</h1><p class="muted">Control lights, fans and your automatic gate from one dashboard.</p><b id="active">0 / 5</b> rooms ON · <b id="gateSummary">Closed</b> gate</div><div class="card"><small>DINING ROOM · DHT22</small><div class="big"><span id="temp">--</span>°C</div>Temperature<p>Humidity: <b id="hum">--%</b></p></div></section>
-<h2>Room controls</h2><button class="btn" id="alloff">All lights & fans OFF</button>
+<h2>Room controls</h2><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn primary" id="allon">All lights &amp; fans ON</button><button class="btn" id="alloff">All lights &amp; fans OFF</button></div>
 <section class="rooms">
 <div class="room"><h3>🚿 Bathroom</h3><div class="dev">LED + Exhaust fan <button class="switch" data-group="bathroom"></button></div><small>Both switch together</small></div>
 <div class="room"><h3>🛏️ Bedroom</h3><div class="dev">LED + Ceiling fan <button class="switch" data-group="bedroom"></button></div><small>Both switch together</small></div>
@@ -30,7 +30,8 @@ async function setGroup(name,on){const deviceIds=groups[name];const {error}=awai
 async function gate(s){let {error}=await sb.from("gate_state").update({state:s,updated_at:new Date().toISOString()}).eq("id",1);if(error){alert(error.message);return}gateDraw(s)}
 document.querySelectorAll("[data-group]").forEach(b=>b.onclick=()=>setGroup(b.dataset.group,!groupOn(b.dataset.group)));
 document.querySelectorAll("[data-gate]").forEach(b=>b.onclick=()=>gate(b.dataset.gate));
-el("alloff").onclick=async()=>{for(const name of Object.keys(groups))if(groupOn(name))await setGroup(name,false)};
+el("allon").onclick=async()=>{for(const name of Object.keys(groups))if(!groupOn(name))await setGroup(name,true);el("activity").textContent="All rooms turned ON"};
+el("alloff").onclick=async()=>{for(const name of Object.keys(groups))if(groupOn(name))await setGroup(name,false);el("activity").textContent="All rooms turned OFF"};
 el("form").addEventListener("submit", async (e) => {
   e.preventDefault();
   const email = el("email").value.trim();
