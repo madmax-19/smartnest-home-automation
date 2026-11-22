@@ -154,9 +154,6 @@ body.night-mode{filter:brightness(0.5) contrast(1.1);background:var(--bg)}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 .loading .room .dev,.loading .hero b{background:linear-gradient(90deg,rgba(255,255,255,.04),rgba(255,255,255,.12),rgba(255,255,255,.04));background-size:200% 100%;animation:shimmer 1.3s infinite;border-radius:12px;color:transparent!important}
 .loading .room .dev *{visibility:hidden}
-body.simple .tilt{transform:none!important}
-body.simple .card,body.simple .room{box-shadow:none!important}
-body.simple *{animation:none!important}
 
 /* ===== SmartNest 2.0 — modern flat design (overrides) ===== */
 :root{--bg:#0a0b0f;--card:#12141a;--line:rgba(255,255,255,.08);--txt:#f2f4f8;--muted:#8b93a3;--accent1:#7c9cff;--accent2:#7c9cff;--green:#34d399;--yellow:#fbbf24;--red:#f87171;--surface2:#1a1d25;--inset:#0d0f14}
@@ -288,7 +285,7 @@ header{position:sticky;top:14px;max-width:1120px;margin:0 auto 32px!important;pa
 .login{background:rgba(7,8,12,.55)!important;backdrop-filter:blur(10px)}
 .loginbox input{border-radius:14px;padding:13px 14px}
 .lp-footer{border-top:1px solid var(--line)}
-@media(max-width:800px){header{border-radius:28px!important;padding:12px 16px!important;top:8px}.lp-grid{grid-template-columns:1fr 1fr}.lp-grid .feat,.lp-grid .feat:nth-child(n){grid-column:span 1}.hero h1{font-size:36px}}
+@media(max-width:800px){header{position:relative!important;top:0!important;border-radius:28px!important;padding:12px 16px!important}.esp-indicator{font-size:11px;padding:6px 10px}.lp-grid{grid-template-columns:1fr 1fr}.lp-grid .feat,.lp-grid .feat:nth-child(n){grid-column:span 1}.hero h1{font-size:36px}}
 @media(max-width:540px){.lp-grid{grid-template-columns:1fr}}
 
 /* ===== Roles ===== */
@@ -353,8 +350,6 @@ body[data-role]:not([data-role="admin"]):not([data-role="operator"]) :is(.scenes
     <span class="status hidden" id="status">Offline</span>
     
     <div id="authControls" class="hidden" style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
-      <button class="icon-btn" id="bellBtn" title="Enable alerts">🔔</button>
-      <button class="icon-btn" id="fxBtn" title="Simple look on/off">✨</button>
       <button class="icon-btn" id="logBtn" title="Activity Log">📋</button>
       <button class="icon-btn" id="voiceBtn" title="Voice Control">🎤</button>
       <button class="icon-btn" id="themeBtn" title="Change Theme">🎨</button>
@@ -890,18 +885,6 @@ async function runScene(name) {
     showToast("Scene applied", "success");
 }
 document.querySelectorAll("[data-scene]").forEach(b => b.onclick = () => runScene(b.dataset.scene));
-
-el("bellBtn").onclick = async () => {
-    if (!("Notification" in window)) { showToast("Notifications not supported on this browser", "error"); return; }
-    const p = await Notification.requestPermission();
-    showToast(p === "granted" ? "Alerts enabled" : "Alerts blocked in browser settings", p === "granted" ? "success" : "error");
-};
-try { if (localStorage.getItem("sn_simple") === "1") document.body.classList.add("simple"); } catch (e) {}
-el("fxBtn").onclick = () => {
-    const on = document.body.classList.toggle("simple");
-    try { localStorage.setItem("sn_simple", on ? "1" : "0"); } catch (e) {}
-    showToast(on ? "Simple look on" : "Simple look off");
-};
 
 // ===== Website mode: landing page vs dashboard =====
 const _root = document.querySelector(".hero").parentElement;
