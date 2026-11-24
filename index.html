@@ -301,7 +301,15 @@ body[data-role]:not([data-role="admin"]):not([data-role="operator"]) :is(.scenes
 #profileMenu.hidden{display:none}
 #pEmail{word-break:break-all;font-size:15px}
 .role-pill{align-self:flex-start;padding:3px 12px;border-radius:999px;border:1px solid var(--line);font-size:12px;text-transform:capitalize;color:var(--accent1)}
-</style></head><body class="loading landing">
+.lp-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:900px;margin:44px auto 0;text-align:left}
+.step{padding:22px}.step h3{margin:0 0 6px;font-size:17px}.step p{margin:0;font-size:14px;line-height:1.55}
+.step .n{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--accent1),#38bdf8);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;margin-bottom:12px}
+.lp-stack{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:36px auto 8px;max-width:760px}
+.lp-stack span{padding:7px 14px;border:1px solid var(--line);border-radius:999px;background:var(--surface2);color:var(--muted);font-size:13px}
+body.checking .lp-hero{visibility:hidden}
+body.landing #ai-chat-btn,body.landing #ai-chat-window{display:none!important}
+@media(max-width:800px){.lp-steps{grid-template-columns:1fr}}
+</style></head><body class="loading landing checking">
 
 <div id="weather-bg"></div>
 
@@ -341,8 +349,8 @@ body[data-role]:not([data-role="admin"]):not([data-role="operator"]) :is(.scenes
     </div>
   </div>
   
-  <nav class="sitenav"><a class="app-only" href="#top">Dashboard</a><a href="#features">Features</a><a href="#how">How it works</a><a class="admin-only" href="#admin">Admin</a></nav>
-  <button class="btn primary landing-only" data-open-login>Sign in</button>
+  <nav class="sitenav"><a class="landing-only" href="#top">Home</a><a class="app-only" href="#top">Dashboard</a><a href="#features">Features</a><a href="#how">How it works</a><a class="admin-only" href="#admin">Admin</a></nav>
+  <button class="btn primary landing-only" data-open-login="in">Sign in</button>
   <button class="btn app-only" id="cmdkBtn" title="Command palette (Ctrl+K)">⌘K</button>
   <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
     <span class="esp-indicator" id="espStatus"><i class="esp-dot"></i><span id="espStatusText">ESP8266</span></span>
@@ -366,10 +374,23 @@ body[data-role]:not([data-role="admin"]):not([data-role="operator"]) :is(.scenes
 <div id="guestBanner" class="hidden">👀 View-only guest account. You can see everything, but an admin has to give you control access.</div>
 <div id="offlineBanner" class="hidden">⚠️ ESP32 is offline — controls are paused so no old command runs when it reconnects.</div>
 
-<section id="features">
-<div class="lp-head"><small>FEATURES</small><h2>Everything your home needs</h2></div>
+<section class="lp-hero" id="top" data-page="home">
+<span class="lp-badge">IoT home automation · ESP32 · Supabase</span>
+<h1>Your home,<br><span class="grad">connected.</span></h1>
+<p>SmartNest lets you control lights, fans and an automatic gate from anywhere, with live sensors, scenes and safety alerts in one dashboard.</p>
+<div class="lp-cta"><button class="btn primary lp-big" data-open-login="in">Sign in</button><button class="btn lp-big" data-open-login="up">Create account</button></div>
 <div class="lp-preview"><div class="pv" data-demo="light"><span>🛋️ Living room</span><i class="pv-sw on"></i></div><div class="pv" data-demo="gate"><span>🚪 Gate</span><b>Closed</b></div><div class="pv"><span>🌡️ Temperature</span><b>27°C</b></div></div>
 <div class="lp-note">Tap the cards to try the demo. Sign in to control your real home.</div>
+<div class="lp-steps">
+<div class="card step"><div class="n">1</div><h3>Tap a switch</h3><p class="muted">Use the dashboard from any phone or laptop, anywhere.</p></div>
+<div class="card step"><div class="n">2</div><h3>The cloud relays it</h3><p class="muted">Supabase stores the command and syncs it in real time.</p></div>
+<div class="card step"><div class="n">3</div><h3>The ESP32 acts</h3><p class="muted">The board switches the relay or moves the gate and reports back.</p></div>
+</div>
+<div class="lp-stack"><span>ESP32</span><span>Supabase</span><span>Render</span><span>HTML · CSS · JS</span><span>DHT11</span><span>L298N motor driver</span></div>
+</section>
+
+<section id="features">
+<div class="lp-head"><small>FEATURES</small><h2>Everything your home needs</h2></div>
 <div class="lp-grid">
 <div class="card feat"><div class="ico">🌍</div><h3>Control from anywhere</h3><p class="muted">Cloud-based, so it works from any network. The dashboard and the board never need to be on the same Wi-Fi.</p></div>
 <div class="card feat"><div class="ico">🌡️</div><h3>Live sensor data</h3><p class="muted">Temperature and humidity with a live chart, also shown on the LCD in the dining room.</p></div>
@@ -890,7 +911,7 @@ document.querySelectorAll("[data-scene]").forEach(b => b.onclick = () => runScen
 const _root = document.querySelector(".hero").parentElement;
 const _top = n => { while (n && n.parentElement !== _root) n = n.parentElement; return n; };
 [document.querySelector(".hero"), document.querySelector(".energy-card"), document.querySelector(".scenes"), document.querySelector(".rooms"), _top(el("allon")), el("offlineBanner")].forEach(n => n && (n.classList.add("app-only"), n.dataset.page = "app"));
-document.querySelectorAll("[data-open-login]").forEach(b => b.onclick = () => { el("login").classList.remove("hidden"); el("email").focus(); });
+document.querySelectorAll("[data-open-login]").forEach(b => b.onclick = () => { if (isSignUpMode !== (b.dataset.openLogin === "up")) el("toggleAuth").click(); el("login").classList.remove("hidden"); el("email").focus(); });
 const closeX = document.createElement("button"); closeX.type = "button"; closeX.textContent = "✕"; closeX.title = "Close";
 closeX.style.cssText = "position:absolute;top:14px;right:14px;width:36px;height:36px;padding:0;border-radius:50%;background:var(--surface2);color:var(--txt);border:1px solid var(--line);font-size:14px";
 closeX.onclick = () => el("login").classList.add("hidden");
@@ -939,6 +960,8 @@ async function loadUsers() {
 el("profileBtn").onclick = e => { e.stopPropagation(); el("profileMenu").classList.toggle("hidden"); };
 document.addEventListener("click", e => { if (!el("profileMenu").contains(e.target)) el("profileMenu").classList.add("hidden"); });
 
+setTimeout(() => document.body.classList.remove("checking"), 3000);
+
 // ===== Pages (hash routing) =====
 el("features").dataset.page = "features"; document.querySelector(".about").dataset.page = "how";
 function route(scroll) {
@@ -947,11 +970,7 @@ function route(scroll) {
     document.querySelectorAll("[data-page]").forEach(n => n.classList.toggle("page-hidden", n.dataset.page !== page));
     document.querySelectorAll(".sitenav a").forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + (page === "home" || page === "app" ? "top" : page)));
     if (page === "admin") loadUsers();
-    if (landing) {
-        if (page === "home") el("login").classList.remove("hidden");
-        else if (scroll === true) el("login").classList.add("hidden");
-        closeX.style.display = page === "home" ? "none" : "flex";
-    }
+    if (landing && scroll === true) el("login").classList.add("hidden");
     if (scroll === true) window.scrollTo({ top: 0 });
 }
 window.addEventListener("hashchange", () => route(true));
@@ -1012,11 +1031,11 @@ el("form").addEventListener("submit", async (e) => {
     const { data, error } = isSignUpMode ? await sb.auth.signUp({ email, password }) : await sb.auth.signInWithPassword({ email, password });
     if (error) { el("msg").textContent = "Failed: " + error.message; return; }
     if (isSignUpMode) { if (!data.session) { el("msg").textContent = "Account created."; el("popup").classList.remove("hidden"); return; } }
-    await load(); el("login").classList.add("hidden"); document.body.classList.remove("landing"); el("authControls").classList.remove("hidden");
+    await load(); history.replaceState(null, "", location.pathname); el("login").classList.add("hidden"); document.body.classList.remove("landing"); el("authControls").classList.remove("hidden");
     logEvent("User signed in successfully.");
   } catch (err) { el("msg").textContent = "Error: " + err.message; } finally { el("submit").disabled = false; el("submit").textContent = isSignUpMode ? "Sign Up" : "Sign in"; }
 });
 el("logout").onclick=async()=>{if(channel)await sb.removeChannel(channel);if(heartbeatTimer)clearInterval(heartbeatTimer);await sb.auth.signOut();location.reload()};
 
-(async()=>{ try { const { data } = await sb.auth.getSession(); if (data.session) { el("login").classList.add("hidden"); document.body.classList.remove("landing"); el("authControls").classList.remove("hidden"); await load(); } } catch (e) { el("msg").textContent = "Init error: " + e.message; } })();
+(async()=>{ try { const { data } = await sb.auth.getSession(); document.body.classList.remove("checking"); if (data.session) { history.replaceState(null, "", location.pathname); el("login").classList.add("hidden"); document.body.classList.remove("landing"); el("authControls").classList.remove("hidden"); await load(); } } catch (e) { el("msg").textContent = "Init error: " + e.message; } })();
 </script></body></html>
