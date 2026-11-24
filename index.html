@@ -3,7 +3,7 @@
 <link rel="icon" href="icon-192.png">
 <meta name="theme-color" content="#142139">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,700&display=swap" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -109,7 +109,8 @@ button:active { transform: scale(0.95) !important; }
 .toast.fade-out{animation:slideOut 0.3s ease-in forwards}
 @keyframes slideOut{from{transform:translateX(0);opacity:1}to{transform:translateX(120%);opacity:0}}
 
-body.night-mode{filter:brightness(0.5) contrast(1.1);background:var(--bg)}
+body.night-mode{background:var(--bg)}
+body.night-mode::after{content:"";position:fixed;inset:0;background:rgba(0,0,0,.48);pointer-events:none;z-index:9000}
 #lockScreen{position:fixed;inset:0;background:rgba(5,9,20,0.8);backdrop-filter:blur(15px);z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;}
 
 /* ACTIVITY LOG PANEL */
@@ -290,7 +291,7 @@ header{position:sticky;top:14px;max-width:1120px;margin:0 auto 32px!important;pa
 
 /* ===== Roles ===== */
 .admin-only{display:none!important}
-body[data-role="admin"] .admin-only{display:block!important}
+body[data-role="admin"] .admin-only:not(.page-hidden){display:block!important}
 body[data-role="admin"] a.admin-only{display:inline-block!important}
 body[data-role]:not([data-role="admin"]):not([data-role="operator"]) :is(.scenes,.rooms .switch,[data-gate],#gateSpeed,#autoClose,#allon,#alloff,#panicBtn){opacity:.45;pointer-events:none}
 #guestBanner{margin:0 0 16px;padding:12px 16px;border-radius:14px;background:rgba(139,123,255,.12);border:1px solid var(--accent1);font-size:14px}
@@ -309,6 +310,85 @@ body[data-role]:not([data-role="admin"]):not([data-role="operator"]) :is(.scenes
 body.checking .lp-hero{visibility:hidden}
 body.landing #ai-chat-btn,body.landing #ai-chat-window{display:none!important}
 @media(max-width:800px){.lp-steps{grid-template-columns:1fr}}
+
+/* ===== SmartNest 3.0: warm light design with dark mode, serif headlines ===== */
+:root{--bg:#f4f1ea;--card:#ffffff;--surface2:#efebe2;--inset:#f7f4ee;--txt:#16130f;--muted:#6d675d;--line:rgba(22,19,15,.1);--accent1:#0d9488;--accent2:#14b8a6;--green:#059669;--red:#dc2626;--yellow:#d97706;--overlay:rgba(244,241,234,.72)}
+body.dark{--bg:#0b0c0f;--card:#14161b;--surface2:#1c1f26;--inset:#0f1115;--txt:#f3f1ed;--muted:#8f96a3;--line:rgba(255,255,255,.09);--green:#34d399;--red:#f87171;--yellow:#fbbf24;--overlay:rgba(7,8,12,.62)}
+body{background:radial-gradient(48% 38% at 88% -6%,color-mix(in srgb,var(--accent1) 20%,transparent),transparent 70%),radial-gradient(40% 30% at 5% 0%,color-mix(in srgb,#f97316 12%,transparent),transparent 70%),var(--bg);background-attachment:fixed;color:var(--txt)}
+body.landing::before{background:radial-gradient(55% 45% at 50% 0%,color-mix(in srgb,var(--accent1) 14%,transparent),transparent 70%)}
+.hero h1,.lp-hero h1,.lp-head h2,.big,.brand,.loginbox h2,.about h2,.step h3,.feat h3{font-family:'Fraunces',Georgia,serif;font-weight:600}
+.hero h1,.lp-hero h1{letter-spacing:-.03em}
+.grad{background:linear-gradient(90deg,var(--accent1),color-mix(in srgb,var(--accent1) 45%,#f97316));-webkit-background-clip:text;background-clip:text;color:transparent;font-style:italic}
+header{background:color-mix(in srgb,var(--card) 82%,transparent)!important;border:1px solid var(--line)!important;box-shadow:0 10px 34px -18px rgba(22,19,15,.3)!important}
+.card,.room,.pv,.tile{background:var(--card);border:1px solid var(--line);border-radius:32px;box-shadow:0 1px 2px rgba(22,19,15,.05),0 22px 44px -26px rgba(22,19,15,.28)}
+body.dark .card,body.dark .room,body.dark .pv{box-shadow:none}
+.card:hover,.room:hover{border-color:color-mix(in srgb,var(--accent1) 35%,var(--line))}
+.room:has(.dev.is-on){background:color-mix(in srgb,var(--accent1) 9%,var(--card));border-color:color-mix(in srgb,var(--accent1) 55%,transparent)}
+.btn,.icon-btn,.esp-indicator{background:var(--card);border:1px solid var(--line);color:var(--txt);box-shadow:0 1px 2px rgba(22,19,15,.05)}
+.btn:hover,.icon-btn:hover{background:var(--surface2)}
+.btn.primary,.primary{background:var(--accent1);color:#fff;border:0;box-shadow:0 10px 22px -10px var(--accent1)}
+.btn.primary:hover,.primary:hover{background:var(--accent1);filter:brightness(1.08)}
+.btn.danger,.danger{background:color-mix(in srgb,var(--red) 10%,var(--card));color:var(--red);border:1px solid color-mix(in srgb,var(--red) 40%,transparent)}
+.sitenav a:hover{background:var(--surface2)}.sitenav a.active{background:var(--txt);color:var(--bg)}
+.switch{background:#d6d1c6!important}
+body.dark .switch{background:#2a2e38!important}
+.switch.on{background:var(--accent1)!important}
+.display{background:var(--inset);border:1px solid var(--line);color:var(--accent1)}
+.gate-container,.chart-container{background:var(--inset);border:1px solid var(--line)}
+.weather-widget{background:var(--surface2)!important;color:var(--txt)!important;border:1px solid var(--line)!important}
+.pv-sw{background:var(--accent1)}body:not(.dark) .pv-sw:not(.on){background:#d6d1c6}
+.pv b,.hero small,.lp-head small{color:var(--accent1)}
+.lp-badge,.lp-stack span,.flow .chip{background:var(--card);border:1px solid var(--line);color:var(--muted)}
+.step .n{background:var(--accent1)}
+.feat .ico{background:color-mix(in srgb,var(--accent1) 14%,var(--card));border:1px solid color-mix(in srgb,var(--accent1) 25%,transparent)}
+.login{background:var(--overlay)!important}
+.loginbox{background:var(--card);border:1px solid var(--line);box-shadow:0 40px 90px -30px rgba(22,19,15,.4)}
+.loginbox input,#tMax{background:var(--inset);border:1px solid var(--line);color:var(--txt);border-radius:12px}
+.loginbox button{background:var(--accent1);color:#fff}
+.toast,.cmdk-box,#profileMenu,#log-panel,#ai-chat-window{background:var(--card);border:1px solid var(--line);color:var(--txt)}
+#tMax{width:64px;padding:6px 8px}
+.urow select{background:var(--surface2);color:var(--txt)}
+@media(max-width:800px){.card,.room{border-radius:26px}}
+
+/* ===== SmartNest 4.0: sidebar dashboard, split sign-in, FAQ, motion ===== */
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.hero>.card,.energy-card,.scenes,.rooms .room{animation:rise .55s ease both}
+.rooms .room:nth-child(2){animation-delay:.05s}.rooms .room:nth-child(3){animation-delay:.1s}.rooms .room:nth-child(4){animation-delay:.15s}.rooms .room:nth-child(5){animation-delay:.2s}.rooms .room:nth-child(6){animation-delay:.25s}
+.card,.room{transition:border-color .25s,translate .25s,box-shadow .25s}
+.room:hover,.card:hover{translate:0 -3px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+h2.sec,.wrap>div>h2{font-family:'Fraunces',Georgia,serif;font-size:28px}
+#form.loginbox{display:grid;grid-template-columns:1fr 1.05fr;width:min(860px,94vw);max-width:none;padding:0;overflow:hidden;position:relative}
+.login-form{padding:40px 38px}
+.login-art{padding:40px 36px;background:linear-gradient(155deg,var(--accent1),color-mix(in srgb,var(--accent1) 50%,#f97316));color:#fff;display:flex;flex-direction:column;justify-content:center;gap:16px}
+.login-art .brand{font-size:20px;color:#fff}
+.login-art h2{font-family:'Fraunces',Georgia,serif;font-size:34px;line-height:1.1;margin:0;letter-spacing:-.02em;color:#fff}
+.login-art ul{margin:0;padding:0;list-style:none;display:grid;gap:10px;font-size:15px;opacity:.95}
+.login-art li:before{content:"✓";margin-right:10px;font-weight:700}
+@media(max-width:720px){#form.loginbox{grid-template-columns:1fr}.login-art{display:none}.login-form{padding:30px 24px}}
+.lp-faq{max-width:760px;margin:72px auto 0;text-align:left}
+.lp-faq details{border:1px solid var(--line);border-radius:20px;background:var(--card);padding:18px 22px;margin-top:12px}
+.lp-faq summary{cursor:pointer;font-weight:600;font-size:16px}
+.lp-faq p{margin:10px 0 0;color:var(--muted);line-height:1.6}
+.lp-band{max-width:900px;margin:64px auto 0;padding:44px 28px!important;text-align:center;background:linear-gradient(155deg,var(--accent1),color-mix(in srgb,var(--accent1) 50%,#f97316))!important;color:#fff;border:0!important}
+.lp-band h2{font-family:'Fraunces',Georgia,serif;font-size:clamp(28px,4vw,40px);margin:0 0 18px;letter-spacing:-.02em;color:#fff}
+.lp-band .btn{background:#fff!important;color:#16130f!important;box-shadow:none}
+@media(min-width:1100px){
+ body:not(.landing) .wrap{margin:0 28px 0 300px;max-width:none}
+ body:not(.landing) header{position:fixed!important;left:20px;top:20px;bottom:20px;width:250px;margin:0!important;flex-direction:column;align-items:stretch;flex-wrap:nowrap;gap:10px;border-radius:32px!important;padding:24px 16px!important;overflow-y:auto}
+ body:not(.landing) header .brand{font-size:24px;text-align:center;margin-bottom:4px}
+ body:not(.landing) .sitenav{flex-direction:column;margin:8px 0;gap:4px;flex:0 0 auto}
+ body:not(.landing) .sitenav a{padding:12px 16px;border-radius:16px;font-size:15px;display:block;text-align:left}
+ body:not(.landing) .sitenav a.active{background:var(--accent1);color:#fff}
+ body:not(.landing) header>.icon-btn#modeBtn{align-self:flex-start}
+ body:not(.landing) header>#cmdkBtn,body:not(.landing) header>#installBtn{width:100%}
+ body:not(.landing) header>div[style*="align-items"]{flex-direction:column;align-items:stretch;margin-top:auto;gap:10px}
+ body:not(.landing) header .esp-indicator{justify-content:flex-start}
+ body:not(.landing) #authControls{display:flex!important;justify-content:center}
+ body:not(.landing) #logout{width:100%}
+ body:not(.landing) #profileMenu{position:fixed;left:290px;bottom:24px;top:auto;right:auto}
+ body:not(.landing) .weather-widget{justify-content:center}
+}
 </style></head><body class="loading landing checking">
 
 <div id="weather-bg"></div>
@@ -317,6 +397,7 @@ body.landing #ai-chat-btn,body.landing #ai-chat-window{display:none!important}
 <div id="log-panel">
   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
     <h2 style="margin:0; font-size:20px;">📋 Activity Log</h2>
+    <button class="btn" id="exportLog" style="margin-left:auto;margin-right:8px;padding:8px 14px;">⬇ CSV</button>
     <button class="icon-btn" id="closeLogBtn">✕</button>
   </div>
   <div id="log-content">
@@ -350,6 +431,8 @@ body.landing #ai-chat-btn,body.landing #ai-chat-window{display:none!important}
   </div>
   
   <nav class="sitenav"><a class="landing-only" href="#top">Home</a><a class="app-only" href="#top">Dashboard</a><a href="#features">Features</a><a href="#how">How it works</a><a class="admin-only" href="#admin">Admin</a></nav>
+  <button class="icon-btn" id="modeBtn" title="Light / dark">🌓</button>
+  <button class="btn hidden" id="installBtn">⬇ Install app</button>
   <button class="btn primary landing-only" data-open-login="in">Sign in</button>
   <button class="btn app-only" id="cmdkBtn" title="Command palette (Ctrl+K)">⌘K</button>
   <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
@@ -387,6 +470,14 @@ body.landing #ai-chat-btn,body.landing #ai-chat-window{display:none!important}
 <div class="card step"><div class="n">3</div><h3>The ESP32 acts</h3><p class="muted">The board switches the relay or moves the gate and reports back.</p></div>
 </div>
 <div class="lp-stack"><span>ESP32</span><span>Supabase</span><span>Render</span><span>HTML · CSS · JS</span><span>DHT11</span><span>L298N motor driver</span></div>
+<div class="lp-faq">
+<div class="lp-head" style="margin:0 0 8px"><small>FAQ</small><h2>Good to know</h2></div>
+<details><summary>Do I need an account?</summary><p>Yes. Sign up to see the dashboard. An admin can then give you control access, otherwise you get a view-only guest account.</p></details>
+<details><summary>What happens if the ESP32 is offline?</summary><p>Controls pause and commands are blocked, so nothing runs unexpectedly when the board reconnects.</p></details>
+<details><summary>Can I use it on my phone?</summary><p>Yes. It works in any browser and can be installed like an app.</p></details>
+<details><summary>Is it safe to share?</summary><p>Accounts have roles (admin, operator, guest), and the database only accepts control commands from authorised accounts.</p></details>
+</div>
+<div class="card lp-band"><h2>Ready to take control of your home?</h2><button class="btn lp-big" data-open-login="up">Create account</button></div>
 </section>
 
 <section id="features">
@@ -432,6 +523,7 @@ body.landing #ai-chat-btn,body.landing #ai-chat-window{display:none!important}
   </div>
   
   <p style="margin-top:10px;">Humidity: <b id="hum">--%</b></p>
+  <div class="muted" style="display:flex;align-items:center;gap:8px;margin:12px 0 6px;font-size:13px;">🌡️ Alert me above <input id="tMax" type="number" min="20" max="60" step="1" value="35"> °C</div>
   <div class="chart-container"><canvas id="sensorChart"></canvas></div>
 </div>
 </section>
@@ -689,7 +781,7 @@ async function refreshOneEspStatus(deviceId, boxId, textId, label) {
 }
 async function refreshEspStatus(){await Promise.all(ESP_DEVICES.map(d=>refreshOneEspStatus(d.id,d.box,d.text,d.label)))}
 
-const themes = [ {a1:'#8b7bff', a2:'#5b8cff'}, {a1:'#38bdf8', a2:'#6366f1'}, {a1:'#34d399', a2:'#38bdf8'}, {a1:'#fb7185', a2:'#f59e0b'} ];
+const themes = [ {a1:'#0d9488', a2:'#14b8a6'}, {a1:'#f97316', a2:'#fb923c'}, {a1:'#6366f1', a2:'#818cf8'}, {a1:'#e11d48', a2:'#fb7185'} ];
 let themeIdx = localStorage.getItem('sn_theme') || 0;
 function applyTheme(i) { document.documentElement.style.setProperty('--accent1', themes[i].a1); document.documentElement.style.setProperty('--accent2', themes[i].a2); }
 el('themeBtn').onclick = () => { themeIdx = (themeIdx + 1) % themes.length; applyTheme(themeIdx); localStorage.setItem('sn_theme', themeIdx); showToast('Theme changed!'); logEvent("Theme changed."); };
@@ -932,6 +1024,9 @@ async function loadRole() {
     } catch (e) { userRole = "admin"; }
     document.body.dataset.role = userRole;
     el("profileInitial").textContent = (sessionEmail[0] || "?").toUpperCase(); el("pEmail").textContent = sessionEmail || "Unknown"; el("pRole").textContent = userRole;
+    { const hr = new Date().getHours(), part = hr < 5 ? "Good night" : hr < 12 ? "Good morning" : hr < 17 ? "Good afternoon" : "Good evening";
+      const nm = (sessionEmail.split("@")[0] || "").replace(/[._-]+/g, " ").replace(/\d+/g, "").trim();
+      const h1 = document.querySelector(".hero h1"); if (h1) h1.textContent = nm ? part + ", " + nm.charAt(0).toUpperCase() + nm.slice(1) + "." : part + "."; }
     el("guestBanner").classList.toggle("hidden", canControl());
     route();
 }
@@ -961,6 +1056,39 @@ el("profileBtn").onclick = e => { e.stopPropagation(); el("profileMenu").classLi
 document.addEventListener("click", e => { if (!el("profileMenu").contains(e.target)) el("profileMenu").classList.add("hidden"); });
 
 setTimeout(() => document.body.classList.remove("checking"), 3000);
+
+// ===== v3 features: light/dark mode, install app, temperature alert, CSV export =====
+{ let dark; try { const m = localStorage.getItem("sn_mode"); dark = m ? m === "dark" : matchMedia("(prefers-color-scheme: dark)").matches; } catch (e) { dark = false; }
+  document.body.classList.toggle("dark", dark); }
+el("modeBtn").onclick = () => { const d = document.body.classList.toggle("dark"); try { localStorage.setItem("sn_mode", d ? "dark" : "light"); } catch (e) {} };
+
+let deferredInstall = null;
+window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); deferredInstall = e; el("installBtn").classList.remove("hidden"); });
+window.addEventListener("appinstalled", () => el("installBtn").classList.add("hidden"));
+el("installBtn").onclick = async () => { if (!deferredInstall) return; deferredInstall.prompt(); await deferredInstall.userChoice; deferredInstall = null; el("installBtn").classList.add("hidden"); };
+
+let tempAlerted = false;
+try { el("tMax").value = localStorage.getItem("sn_tmax") || 35; } catch (e) {}
+el("tMax").onchange = () => { try { localStorage.setItem("sn_tmax", el("tMax").value); } catch (e) {} tempAlerted = false; };
+setInterval(() => {
+    if (document.body.classList.contains("landing")) return;
+    const t = parseFloat(el("temp").textContent), max = parseFloat(el("tMax").value);
+    if (isNaN(t) || isNaN(max)) return;
+    if (t > max && !tempAlerted) { tempAlerted = true; notify("High temperature", t.toFixed(1) + "°C is above your " + max + "°C limit"); logEvent("High temperature: " + t.toFixed(1) + "°C"); }
+    else if (t <= max - 1) tempAlerted = false;
+}, 5000);
+
+el("exportLog").onclick = () => {
+    const rows = [["time", "event"]].concat(Array.from(document.querySelectorAll("#log-content .log-item")).reverse().map(d => [d.querySelector(".log-time").textContent, d.querySelector(".log-msg").textContent]));
+    const csv = rows.map(r => r.map(v => '"' + String(v).replace(/"/g, '""') + '"').join(",")).join("\n");
+    const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" })); a.download = "smartnest-activity.csv"; a.click(); URL.revokeObjectURL(a.href);
+};
+
+{ const f = el("form"), wrap = document.createElement("div"); wrap.className = "login-form";
+  Array.from(f.childNodes).filter(n => n !== closeX).forEach(n => wrap.appendChild(n));
+  const art = document.createElement("div"); art.className = "login-art";
+  art.innerHTML = '<div class="brand">⌂ SmartNest</div><h2>Control your home from anywhere.</h2><ul><li>Rooms and gate in real time</li><li>Live temperature and humidity</li><li>Roles for family and guests</li></ul>';
+  f.append(art, wrap); }
 
 // ===== Pages (hash routing) =====
 el("features").dataset.page = "features"; document.querySelector(".about").dataset.page = "how";
