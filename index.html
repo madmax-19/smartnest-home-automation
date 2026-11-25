@@ -373,21 +373,41 @@ h2.sec,.wrap>div>h2{font-family:'Fraunces',Georgia,serif;font-size:28px}
 .lp-band{max-width:900px;margin:64px auto 0;padding:44px 28px!important;text-align:center;background:linear-gradient(155deg,var(--accent1),color-mix(in srgb,var(--accent1) 50%,#f97316))!important;color:#fff;border:0!important}
 .lp-band h2{font-family:'Fraunces',Georgia,serif;font-size:clamp(28px,4vw,40px);margin:0 0 18px;letter-spacing:-.02em;color:#fff}
 .lp-band .btn{background:#fff!important;color:#16130f!important;box-shadow:none}
+/* sidebar (desktop) / slide-in drawer (phone) for the signed-in dashboard */
+body:not(.landing) header{position:fixed!important;margin:0!important;flex-direction:column;justify-content:flex-start!important;align-items:stretch;flex-wrap:nowrap;gap:10px;overflow-y:auto;background:var(--card)!important;backdrop-filter:none!important}
+body:not(.landing) header .brand{font-size:24px;text-align:center;margin-bottom:4px}
+body:not(.landing) .sitenav{flex-direction:column;flex-wrap:nowrap;flex:0 0 auto;margin:8px 0;gap:4px}
+body:not(.landing) .sitenav a{padding:12px 16px;border:0;border-radius:16px;font-size:15px;display:block;text-align:left}
+body:not(.landing) .sitenav a.active{background:var(--accent1);color:#fff}
+body:not(.landing) header>.icon-btn#modeBtn{align-self:flex-start}
+body:not(.landing) header>#cmdkBtn,body:not(.landing) header>#installBtn{width:100%}
+body:not(.landing) header>div[style*="align-items"]{flex-direction:column;align-items:stretch;margin-top:auto;gap:10px}
+body:not(.landing) header .esp-indicator{justify-content:flex-start}
+body:not(.landing) #authControls{display:flex!important;justify-content:center}
+body:not(.landing) #logout{width:100%}
+body:not(.landing) .weather-widget{justify-content:center}
+.sb-extra{display:flex;flex-direction:column;gap:12px}
+.sb-card{border:1px solid var(--line);border-radius:20px;padding:12px 14px;background:var(--surface2)}
+.sb-card small{display:block;color:var(--muted);font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.sb-row{display:flex;justify-content:space-between;gap:8px;font-size:14px;padding:3px 0}
+.sb-row b{text-transform:capitalize}.sb-row b.good{color:var(--green)}.sb-row b.bad{color:var(--red)}
+.sb-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.sb-actions .btn{padding:9px 6px;font-size:13px;min-height:0}
+#mbar{display:none;position:fixed;top:0;left:0;right:0;height:56px;align-items:center;gap:12px;padding:0 14px;background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);z-index:2000}
+#mbar .brand{font-size:19px}#mDot{width:11px;height:11px;border-radius:50%;background:var(--muted);margin-left:auto}#mDot.good{background:var(--green)}#mDot.bad{background:var(--red)}
+body.menu-open #ai-chat-btn,body.menu-open #ai-chat-window{display:none!important}
+#scrim{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:2400}
 @media(min-width:1100px){
  body:not(.landing) .wrap{margin:0 28px 0 300px;max-width:none}
- body:not(.landing) header{position:fixed!important;left:20px;top:20px;bottom:20px;width:250px;margin:0!important;flex-direction:column;align-items:stretch;flex-wrap:nowrap;gap:10px;border-radius:32px!important;padding:24px 16px!important;overflow-y:auto}
- body:not(.landing) header .brand{font-size:24px;text-align:center;margin-bottom:4px}
- body:not(.landing) .sitenav{flex-direction:column;margin:8px 0;gap:4px;flex:0 0 auto}
- body:not(.landing) .sitenav a{padding:12px 16px;border-radius:16px;font-size:15px;display:block;text-align:left}
- body:not(.landing) .sitenav a.active{background:var(--accent1);color:#fff}
- body:not(.landing) header>.icon-btn#modeBtn{align-self:flex-start}
- body:not(.landing) header>#cmdkBtn,body:not(.landing) header>#installBtn{width:100%}
- body:not(.landing) header>div[style*="align-items"]{flex-direction:column;align-items:stretch;margin-top:auto;gap:10px}
- body:not(.landing) header .esp-indicator{justify-content:flex-start}
- body:not(.landing) #authControls{display:flex!important;justify-content:center}
- body:not(.landing) #logout{width:100%}
+ body:not(.landing) header{left:20px;top:20px;bottom:20px;width:250px;border-radius:32px!important;padding:24px 16px!important}
  body:not(.landing) #profileMenu{position:fixed;left:290px;bottom:24px;top:auto;right:auto}
- body:not(.landing) .weather-widget{justify-content:center}
+}
+@media(max-width:1099px){
+ body:not(.landing) .wrap{padding-top:70px}
+ body:not(.landing) header{left:0;top:0;bottom:0;width:min(310px,88vw);border-radius:0 32px 32px 0!important;padding:24px 16px!important;transform:translateX(-105%);transition:transform .3s ease;z-index:2500;box-shadow:0 0 60px rgba(0,0,0,.35)!important}
+ body.menu-open:not(.landing) header{transform:none}
+ body:not(.landing) #mbar{display:flex}
+ body.menu-open:not(.landing) #scrim{display:block}
+ body:not(.landing) #profileMenu{position:fixed;left:16px;bottom:20px;top:auto;right:auto;z-index:2600}
 }
 </style></head><body class="loading landing checking">
 
@@ -422,6 +442,8 @@ h2.sec,.wrap>div>h2{font-family:'Fraunces',Georgia,serif;font-size:28px}
 </div>
 
 <div class="wrap">
+<div id="mbar"><button class="icon-btn" id="menuBtn" title="Menu">☰</button><b class="brand">⌂ SmartNest</b><span id="mDot"></span></div>
+<div id="scrim"></div>
 <header>
   <div>
     <div class="brand">⌂ SmartNest</div>
@@ -431,6 +453,17 @@ h2.sec,.wrap>div>h2{font-family:'Fraunces',Georgia,serif;font-size:28px}
   </div>
   
   <nav class="sitenav"><a class="landing-only" href="#top">Home</a><a class="app-only" href="#top">Dashboard</a><a href="#features">Features</a><a href="#how">How it works</a><a class="admin-only" href="#admin">Admin</a></nav>
+  <div class="sb-extra app-only">
+    <div class="sb-card"><small>At a glance</small>
+      <div class="sb-row"><span>Rooms on</span><b id="sbRooms">0/5</b></div>
+      <div class="sb-row"><span>Gate</span><b id="sbGate">closed</b></div>
+      <div class="sb-row"><span>Climate</span><b id="sbClimate">--</b></div>
+      <div class="sb-row"><span>ESP32</span><b id="sbEsp">…</b></div>
+    </div>
+    <div class="sb-card"><small>Quick actions</small>
+      <div class="sb-actions"><button class="btn" id="qAllOff">All off</button><button class="btn" id="qNight">🌙 Night</button><button class="btn" id="qOpen">Open gate</button><button class="btn" id="qClose">Close gate</button></div>
+    </div>
+  </div>
   <button class="icon-btn" id="modeBtn" title="Light / dark">🌓</button>
   <button class="btn hidden" id="installBtn">⬇ Install app</button>
   <button class="btn primary landing-only" data-open-login="in">Sign in</button>
@@ -1089,6 +1122,28 @@ el("exportLog").onclick = () => {
   const art = document.createElement("div"); art.className = "login-art";
   art.innerHTML = '<div class="brand">⌂ SmartNest</div><h2>Control your home from anywhere.</h2><ul><li>Rooms and gate in real time</li><li>Live temperature and humidity</li><li>Roles for family and guests</li></ul>';
   f.append(art, wrap); }
+
+// ===== sidebar extras + phone drawer =====
+function sbRefresh() {
+    const names = Object.keys(groups);
+    el("sbRooms").textContent = names.filter(groupOn).length + "/" + names.length;
+    el("sbGate").textContent = (currentGateState || "closed").replaceAll("_", " ");
+    const t = el("temp").textContent, h = el("hum").textContent;
+    el("sbClimate").textContent = t === "--" ? "--" : t + "°C · " + h;
+    const st = esp32Online === null ? "" : esp32Online ? "good" : "bad";
+    el("sbEsp").textContent = esp32Online === null ? "…" : esp32Online ? "Online" : "Offline"; el("sbEsp").className = st; el("mDot").className = st;
+}
+setInterval(sbRefresh, 1000); sbRefresh();
+el("qAllOff").onclick = () => el("alloff").click();
+el("qNight").onclick = () => runScene("night");
+el("qOpen").onclick = () => gate("moving_open");
+el("qClose").onclick = () => gate("moving_close");
+const closeMenu = () => document.body.classList.remove("menu-open");
+el("menuBtn").onclick = () => document.body.classList.toggle("menu-open");
+el("scrim").onclick = closeMenu;
+window.addEventListener("hashchange", closeMenu);
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeMenu(); });
+document.querySelectorAll(".sitenav a").forEach(a => a.addEventListener("click", closeMenu));
 
 // ===== Pages (hash routing) =====
 el("features").dataset.page = "features"; document.querySelector(".about").dataset.page = "how";
