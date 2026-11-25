@@ -458,7 +458,7 @@ body.menu-open #ai-chat-btn,body.menu-open #ai-chat-window{display:none!importan
       <div class="sb-row"><span>Rooms on</span><b id="sbRooms">0/5</b></div>
       <div class="sb-row"><span>Gate</span><b id="sbGate">closed</b></div>
       <div class="sb-row"><span>Climate</span><b id="sbClimate">--</b></div>
-      <div class="sb-row"><span>ESP32</span><b id="sbEsp">…</b></div>
+      <div class="sb-row"><span>Boards</span><b id="sbEsp">…</b></div>
     </div>
     <div class="sb-card"><small>Quick actions</small>
       <div class="sb-actions"><button class="btn" id="qAllOff">All off</button><button class="btn" id="qNight">🌙 Night</button><button class="btn" id="qOpen">Open gate</button><button class="btn" id="qClose">Close gate</button></div>
@@ -488,7 +488,7 @@ body.menu-open #ai-chat-btn,body.menu-open #ai-chat-window{display:none!importan
 </header>
 
 <div id="guestBanner" class="hidden">👀 View-only guest account. You can see everything, but an admin has to give you control access.</div>
-<div id="offlineBanner" class="hidden">⚠️ ESP32 is offline — controls are paused so no old command runs when it reconnects.</div>
+<div id="offlineBanner" class="hidden">⚠️ No board is online — controls are paused so no old command runs when a board reconnects.</div>
 
 <section class="lp-hero" id="top" data-page="home">
 <span class="lp-badge">IoT home automation · ESP32 · Supabase</span>
@@ -717,7 +717,7 @@ function addChatMsg(text, sender) {
 }
 
 async function handleAIChat(text) {
-    const FAIL = "I couldn't do that. The ESP32 is offline or this account is view-only.";
+    const FAIL = "I couldn't do that. No board is online, or this account is view-only.";
     const t = text.toLowerCase();
     if (t.includes('status') || t.includes('how many rooms')) {
         const active = Object.keys(groups).filter(groupOn).length;
@@ -804,7 +804,7 @@ function showToast(message, type = 'info') {
 }
 function formatUptime(seconds) { if (!seconds) return "0m"; const d = Math.floor(seconds / 86400); const h = Math.floor((seconds % 86400) / 3600); const m = Math.floor((seconds % 3600) / 60); if (d > 0) return `${d}d ${h}h`; if (h > 0) return `${h}h ${m}m`; return `${m}m`; }
 function setEspStatusFor(boxId, textId, label, online, lastSeen, uptime, ram) {
-    const box = el(boxId); box.classList.toggle("online", online); box.classList.toggle("offline", !online); if (boxId === "esp32Status") applyOfflineMode(online); el(textId).textContent = label + ": " + (online ? "Connected" : "Disconnected");
+    const box = el(boxId); box.classList.toggle("online", online); box.classList.toggle("offline", !online); espOnline[boxId] = online; applyOfflineMode(Object.values(espOnline).some(Boolean)); el(textId).textContent = label + ": " + (online ? "Connected" : "Disconnected");
     if (lastSeen) { const ramKB = ram ? Math.round(ram / 1024) : 0; box.title = `Last seen: ${new Date(lastSeen).toLocaleString()}\nUptime: ${formatUptime(uptime)}\nFree RAM: ${ramKB} KB`; } else { box.title = "No heartbeat received"; }
 }
 async function refreshOneEspStatus(deviceId, boxId, textId, label) {
@@ -987,6 +987,7 @@ el("alloff").onclick=async()=>{if(!requireControl()||!deviceReady())return;for(c
 
 // ===== PRO FEATURES: offline mode, gate safety, scenes, alerts =====
 let esp32Online = null, gateTimer = null, watchedState = null;
+const espOnline = {};   // online state of each board; the system counts as online if any board is
 const OPEN_ALERT_MS = 5 * 60 * 1000, AUTO_CLOSE_MS = 2 * 60 * 1000, MOVING_ALERT_MS = 60 * 1000;
 setTimeout(() => document.body.classList.remove("loading"), 8000);
 
@@ -998,8 +999,8 @@ function applyOfflineMode(online) {
     const was = esp32Online; esp32Online = online;
     document.body.classList.toggle("device-offline", !online);
     el("offlineBanner").classList.toggle("hidden", online);
-    if (was === true && !online) { notify("ESP32 went offline"); logEvent("⚠️ ESP32 went offline"); }
-    if (was === false && online) { showToast("ESP32 is back online", "success"); logEvent("ESP32 back online"); }
+    if (was === true && !online) { notify("All boards went offline"); logEvent("⚠️ All boards went offline"); }
+    if (was === false && online) { showToast("A board is back online", "success"); logEvent("A board is back online"); }
 }
 function gateWatch(s) {
     if (s === watchedState) return; watchedState = s;
@@ -1022,7 +1023,7 @@ el("autoClose").onchange = e => {
 
 async function runScene(name) {
     if (!requireControl()) return;
-    if (esp32Online === false) { showToast("ESP32 is offline", "error"); return; }
+    if (esp32Online === false) { showToast("No board is online", "error"); return; }
     const allOff = async () => { for (const g of Object.keys(groups)) if (groupOn(g)) await setGroup(g, false); };
     if (name === "night") { await allOff(); await gate("moving_close"); }
     if (name === "leave") { await allOff(); await gate("moving_close"); el("lockScreen").classList.remove("hidden"); }
@@ -1044,7 +1045,7 @@ el("form").style.position = "relative"; el("form").prepend(closeX);
 
 // ===== Roles: admin (control) / guest (view only) / device (ESP32 account) =====
 let panicBypass = false, sessionEmail = "";
-function deviceReady() { if (esp32Online === false && !panicBypass) { showToast("ESP32 is offline. Command not sent.", "error"); return false; } return true; }
+function deviceReady() { if (esp32Online === false && !panicBypass) { showToast("No board is online. Command not sent.", "error"); return false; } return true; }
 let userRole = "admin";   // stays admin if the roles table does not exist yet
 const isAdmin = () => userRole === "admin";
 const canControl = () => userRole === "admin" || userRole === "operator";
